@@ -29,7 +29,7 @@ const addGenero = (request, response) => {
         }
         response.status(200).json({
             status : "success", message : "Gênero criado!",
-            objeto : results.rows[0] // retorna o genero criado
+            objeto : results.rows[0] 
         })
     })
 }
@@ -55,10 +55,10 @@ const updateGenero = (request, response) => {
 }
 
 const deleteGenero = (request, response) => {
-    const codigo = parseInt(request.params.codigo); // nos parametros da requisicao vou passar um codigo
+    const codigo = parseInt(request.params.codigo); 
     pool.query(`DELETE FROM genero WHERE codigo = $1`, [codigo], 
     (error, results) => {
-        if(error || results.rowCount == 0){  // se o item ja foi deletado, ele retorna dizendo que nenhuma linha foi removida, justamente por nao existir mais
+        if(error || results.rowCount == 0){  
             return response.status(400).json({
                 status : 'error',
                 message : 'Erro ao remover o gênero: ' + 
@@ -67,17 +67,17 @@ const deleteGenero = (request, response) => {
         }
         response.status(200).json({
             status : "success", message : "Gênero removido!",
-            objeto : results.rows[0] // retorna o predio criado, o primeiro deles no caso
+            objeto : results.rows[0] 
 
         })
     })
 }
 
 const getGeneroPorCodigo = (request, response) => {
-    const codigo = parseInt(request.params.codigo); // nos parametros da requisicao vou passar um codigo
+    const codigo = parseInt(request.params.codigo); 
     pool.query(`SELECT * FROM genero WHERE codigo = $1`, [codigo], 
     (error, results) => {
-        if(error || results.rowCount == 0){  // se o item ja foi deletado, ele retorna dizendo que nenhuma linha foi removida, justamente por nao existir mais
+        if(error || results.rowCount == 0){ 
             return response.status(400).json({
                 status : 'error',
                 message : 'Erro ao recuperar o gênero: ' + 
