@@ -1,17 +1,16 @@
-const { response } = require('express');
 const { pool } = require('../config');
 
 const getAutores = (request, response) => {
    pool.query('SELECT * FROM autor ORDER BY codigo', 
-    (error, results) => {
+        (error, results) => {
             if(error){
                 return response.status(400).json({
                     status : 'error',
-                    message : 'Erro ao consultar o prédio: ' + error
+                    message : 'Erro ao consultar o autor: ' + error
                 })
             }
             response.status(200).json(results.rows);
-    }
+        }
    )
 }
 
@@ -24,7 +23,7 @@ const addAutor = (request, response) => {
         if(error){
             return response.status(400).json({
                 status : 'error',
-                message : 'Erro ao inserir o autor!'
+                message : 'Erro ao inserir o autor: ' + error
             })
         }
         response.status(200).json({
@@ -35,15 +34,15 @@ const addAutor = (request, response) => {
 }
 
 const updateAutor = (request, response) => {
-    const {codigo, nome} = request.body; 
+    const {nome, codigo} = request.body; 
     pool.query(`UPDATE autor SET nome=$1
-    WHERE codigo =$2 RETURNING codigo, nome`, 
+    WHERE codigo=$2 RETURNING codigo, nome`, 
     [nome, codigo], 
     (error, results) => {
         if(error){
             return response.status(400).json({
                 status : 'error',
-                message : 'Erro ao alterar o autor!'
+                message : 'Erro ao alterar o autor: ' + error
             })
         }
         response.status(200).json({
@@ -56,7 +55,7 @@ const updateAutor = (request, response) => {
 
 const deleteAutor = (request, response) => {
     const codigo = parseInt(request.params.codigo);
-    pool.query(`DELETE FROM autor WHERE codigo = $1`, [codigo], 
+    pool.query(`DELETE FROM autor WHERE codigo=$1`, [codigo], 
     (error, results) => {
         if(error || results.rowCount == 0){  
             return response.status(400).json({
@@ -66,16 +65,14 @@ const deleteAutor = (request, response) => {
             })
         }
         response.status(200).json({
-            status : "success", message : "Autor removido!",
-            objeto : results.rows[0] 
-
+            status : "success", message : "Autor removido!"
         })
     })
 }
 
 const getAutorPorCodigo = (request, response) => {
     const codigo = parseInt(request.params.codigo); 
-    pool.query(`SELECT * FROM autor WHERE codigo = $1`, [codigo], 
+    pool.query(`SELECT * FROM autor WHERE codigo=$1`, [codigo], 
     (error, results) => {
         if(error || results.rowCount == 0){ 
             return response.status(400).json({
