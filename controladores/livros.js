@@ -1,7 +1,11 @@
 const { pool } = require('../config');
 
 const getLivros = (request, response) => {
-    pool.query('SELECT * FROM livro ORDER BY codigo',
+    pool.query(`SELECT a.nome as autor, g.nome as genero, l.codigo, l.titulo from livro l
+    INNER JOIN genero g
+    ON l.genero = g.codigo
+    INNER JOIN autor a
+    ON l.autor = a.codigo;`,
         (error, results) => {
             if(error){
                 return response.status(400).json({

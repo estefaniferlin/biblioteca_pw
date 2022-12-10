@@ -10,7 +10,7 @@ const pool = new Pool({
   connectionString: isProduction ? process.env.DATABASE_URL: connectionString
   //descomentar para fazer deploy no heroku
   //, ssl: {
-  //  rejectUnauthorized: false,
+   // rejectUnauthorized: false,
   //}
 })
 
